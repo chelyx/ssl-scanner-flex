@@ -1,22 +1,39 @@
+#include "scanner.h"
 int main() {
 	TOKEN token;
 	
 	do {
-		char res[50];
 		token = yylex();
+		
 		switch(token){
 			case PROGRAMA:
-				strcpy(res, "Token: Programa");
+				printf("\nToken: Programa");
 				break;
 			case ESCRIBIR:
-				strcpy(res, "Token: Escribir");
+				printf("\nToken: Escribir");
 				break;
 			case LEER:
-				strcpy(res, "Token: Leer");
+				printf("\nToken: Leer");
 				break;
 			case DECLARAR:
-				strcpy(res, "Token: Declarar");
+				printf("\nToken: Declarar");
 				break;
+			case IDENTIFICADOR:
+				printf("\nToken: Identificador, Lexema: %s", yytext);
+				break;
+			case CONSTANTE:
+				printf("\nToken: Constante, Lexema: %s", yytext);
+				break;
+			case ASIGNACION:
+				printf("\nToken: Asignación");
+				break;
+			default:
+				printf("\nToken: %s", yytext);
+				break;
+				
 		}
-	}
+	}while(token!=FDT);
+	printf("Fin de Archivo");
+	
+	return 0;
 }
