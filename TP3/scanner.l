@@ -8,11 +8,11 @@
 %option noinput
 %option nounput
 
-Digito [0-9] 
+Digito [[:digit:]] 
 Letra [[:alpha:]]
 Alfanum [[:alnum:]]
 Espacio  [[:space:]]
-Otros [[:punct:]]{-}[().,+\-*/;#]
+Otros [[:^alnum:]]{-}[[:space:]]{-}[-+*/();,<#]
 Asignacion 	<-
 Comentario	"##".*
 Identificador {Letra}{Alfanum}*
@@ -28,19 +28,17 @@ escribir 						return ESCRIBIR;
 {Constante}						return CONSTANTE;
 "("							return '(';
 ")"							return ')';
-"."							return '.';
 ","							return ',';
 "+"							return '+';
 "-"							return '-';
 "*"							return '*';
 "/"							return '/';
 ";"							return ';';
-"#"							return '#';
 {Asignacion}						return ASIGNACION;
-{Otros}+						printf("\nError léxico: cadena desconocida: %s",yytext);
-{Letra}{Alfanum}*{Otros}+({Alfanum}|{Otros})*  	printf("\nError léxico: identificador inválido: %s",yytext);
-{Digito}+{Letra}+{Alfanum}*				printf("\nError léxico: constante inválida: %s",yytext);
-{Espacio}+						|
-{Comentario}						|
-.																													;
+{Letra}{Alfanum}*{Otros}+({Alfanum}|{Otros})*   printf("Error léxico: identificador inválido: %s\n",yytext);
+{Digito}+{Letra}+{Alfanum}*                     printf("Error léxico: constante inválida: %s\n",yytext);
+{Espacio}+                                      |
+{Comentario}                                    ;
+{Otros}+                                        |
+.                                               printf("Error léxico: cadena desconocida: %s\n",yytext);																							;
 %%
