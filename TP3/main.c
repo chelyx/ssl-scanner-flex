@@ -1,39 +1,72 @@
+//////////////////////////////////////////////////////////////////////////////////////
+/*
+      TP3 - Grupo 7
+      Araceli Soffulto
+      Guillermo Kalniker
+      Juan Ferro
+                                                                                    */
+//////////////////////////////////////////////////////////////////////////////////////
 #include "scanner.h"
 int main() {
-	TOKEN token;
+	int token;
 	
 	do {
 		token = yylex();
 		
 		switch(token){
 			case PROGRAMA:
-				printf("\nToken: Programa");
+				printf("Token: Programa\n");
 				break;
-			case ESCRIBIR:
-				printf("\nToken: Escribir");
-				break;
-			case LEER:
-				printf("\nToken: Leer");
+			case FIN_PROG:
+				printf("Token: Fin-Prog\n");
 				break;
 			case DECLARAR:
-				printf("\nToken: Declarar");
+				printf("Token: Declarar\n");
+				break;
+			case LEER:
+				printf("Token: Leer\n");
+				break;
+			case ESCRIBIR:
+				printf("Token: Escribir\n");
 				break;
 			case IDENTIFICADOR:
-				printf("\nToken: Identificador, Lexema: %s", yytext);
+				printf("Token: Identificador, Lexema: %s\n", yytext);
 				break;
 			case CONSTANTE:
-				printf("\nToken: Constante, Lexema: %s", yytext);
+				printf("Token: Constante, Lexema: %s\n", yytext);
+				break;
+			case '(':
+				printf("Token: \'(\'\n");
+				break;
+			case ')':
+				printf("Token: \')\'\n");
+				break;
+			case ',':
+				printf("Token: \',\'\n");
+				break;
+			case '+':
+				printf("Token: \'+\'\n");
+				break;
+			case '-':
+				printf("Token: \'-\'\n");
+				break;
+			case '*':
+				printf("Token: \'*\'\n");
+				break;
+			case '/':
+				printf("Token: \'/\'\n");
+				break;
+			case ';':
+				printf("Token: \';\'\n");
 				break;
 			case ASIGNACION:
-				printf("\nToken: Asignación");
+				printf("Token: Asignación\n");
 				break;
-			default:
-				printf("\nToken: %s", yytext);
+			case FDT:
+				printf("Token: Fin de Archivo\n");
 				break;
-				
 		}
 	}while(token!=FDT);
-	printf("Fin de Archivo");
 	
 	return 0;
 }
