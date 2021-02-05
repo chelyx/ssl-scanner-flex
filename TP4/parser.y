@@ -30,10 +30,10 @@ bloquesentencias : codigo
 codigo :   sentencia codigo  
   	 | sentencia
   	 ;
-sentencia : LEER '('identificadores')' {printf("leer\n");}
-       | ESCRIBIR '('expresiones')'   {printf("escribir\n");}
-       | IDENTIFICADOR "<-" expresion  {printf("asignación\n");}
-       | DECLARAR IDENTIFICADOR {printf("declarar %s\n",$2);}
+sentencia : LEER '('identificadores')' ';' {printf("leer\n");}
+       | ESCRIBIR '('expresiones')' ';' {printf("escribir\n");}
+       | IDENTIFICADOR "<-" expresion ';' {printf("asignación\n");}
+       | DECLARAR IDENTIFICADOR ';'{printf("declarar %s\n",$2);}
        ;
 identificadores :   IDENTIFICADOR 
                   | IDENTIFICADOR ',' identificadores 
