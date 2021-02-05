@@ -4,8 +4,8 @@
 %}
 
 %code provides {
-extern int errlex; 	/* Contador de Errores Léxicos */
-
+void yyerror(const char *);
+extern int errlex;
 }
 
 %defines "parser.h"
@@ -21,41 +21,37 @@ extern int errlex; 	/* Contador de Errores Léxicos */
 %left  '*'  '/'
 %precedence NEG
 
-
 %%
-program :  PROGRAMA bloquesentencias FIN_PROG {if (errlex+yynerrs > 0) YYABORT;else YYACCEPT;};
-bloquesentencias : codigo
-		    | %empty
-		    ;
-codigo :   sentencia codigo  
-  	 | sentencia
-  	 ;
-sentencia : LEER '('identificadores')' ';' {printf("leer\n");}
-       | ESCRIBIR '('expresiones')' ';' {printf("escribir\n");}
-       | IDENTIFICADOR "<-" expresion ';' {printf("asignación\n");}
-       | DECLARAR IDENTIFICADOR ';'{printf("declarar %s\n",$2);}
-       ;
-identificadores :   IDENTIFICADOR 
-                  | IDENTIFICADOR ',' identificadores 
- 		   ;
-expresiones :    expresion 
-		| expresion ',' expresiones 
-		;
-expresion : 	termino 
-		| expresion '+' termino {printf("suma\n");}
-		| expresion '-' termino {printf("resta\n");}
- 		;
-termino : valor 
-   	| termino '*' valor {printf("multiplicacion\n");}
-   	| termino '/' valor {printf("division\n");}
- 	;
-valor : IDENTIFICADOR  
-	| CONSTANTE  
-	| '-'expresion %prec NEG  {printf("inversión\n");}
-	| '('expresion')'   {printf("paréntesis\n");}
-	;
+program             : PROGRAMA bloquesentencias FIN_PROG { if (errlex+yynerrs > 0) YYABORT; else YYACCEPT; }
+                    ;
+bloquesentencias    : codigo
+                    | %empty
+                    ;
+codigo              : codigo sentencia
+                    | sentencia
+                    ;
+sentencia           : LEER '('identificadores')' ';' { printf("leer\n"); }
+                    | ESCRIBIR '('expresiones')' ';' { printf("escribir\n"); }
+                    | IDENTIFICADOR "<-" expresion ';' { printf("asignación\n"); }
+                    | DECLARAR IDENTIFICADOR ';' { printf("declarar %s\n",$2); }
+                    | error ';'
+                    ;
+identificadores     : IDENTIFICADOR
+                    | identificadores ',' IDENTIFICADOR
+                    ;
+expresiones         : expresion
+                    | expresiones ','expresion
+                    ;
+expresion           : expresion '+' expresion { printf("suma\n"); }
+                    | expresion '-' expresion { printf("resta\n"); }
+                    | expresion '*' expresion { printf("multiplicación\n"); }
+                    | expresion '/' expresion { printf("división\n"); }
+                    | IDENTIFICADOR
+                    | CONSTANTE
+                    | '-'expresion %prec NEG { printf("inversión\n"); }
+                    | '('expresion')' { printf("paréntesis\n"); }
+                    ;
 %%
-
 void yyerror(const char *s){
         printf("línea #%d  %s\n", yylineno, s);
         return;

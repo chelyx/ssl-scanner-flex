@@ -1,11 +1,9 @@
-%top{
-	#include <stdio.h>
-	#include "parser.h"
-	int errlex;
-	char msg[200];
-	void yyerror(const char *);
-}
-
+%{
+#include <stdio.h>
+#include "parser.h"
+int errlex = 0;
+char msg[200];
+%}
 
 %option outfile="scanner.c"
 %option header-file="scanner.h"
@@ -14,7 +12,7 @@
 %option noyywrap
 %option yylineno
 
-Digito [[:digit:]] 
+Digito [[:digit:]]
 Letra [[:alpha:]]
 Alfanum [[:alnum:]]
 Espacio  [[:space:]]

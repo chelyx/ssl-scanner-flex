@@ -1,6 +1,15 @@
+//////////////////////////////////////////////////////////////////////////////////////
+/*
+      TP4 - Grupo 7
+      Araceli Soffulto
+      Guillermo Kalniker
+      Juan Ferro
+                                                                                    */
+//////////////////////////////////////////////////////////////////////////////////////
 #include <stdio.h>
 #include "parser.h"
 #include "scanner.h"
+
 extern int yynerrs;
 
 int main() {
