@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 #include "scanner.h"
+#include "semantic.h"
 %}
 
 %code provides {
@@ -22,7 +23,11 @@ extern int errlex;
 %precedence NEG
 
 %%
-program             : PROGRAMA bloquesentencias FIN_PROG { if (errlex+yynerrs > 0) YYABORT; else YYACCEPT; }
+program             : PROGRAMA sentenciasfin { iniciar(); }
+                    ;
+sentenciasfin       : bloquesentencias fin { if (errlex+yynerrs > 0) YYABORT; else YYACCEPT;}
+                    ;
+fin                 : FIN_PROG { terminar(); }
                     ;
 bloquesentencias    : codigo
                     | %empty
@@ -37,7 +42,7 @@ sentencia           : LEER '('identificadores')' ';' { leer($2); }
                     | error ';'
                     ;
 identificadores     : identificador
-                    | identificadores ',' IDENTIFICADOR
+                    | identificadores ',' identificador
                     ;
 expresiones         : expresion
                     | expresiones ','expresion

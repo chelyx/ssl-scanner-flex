@@ -33,3 +33,15 @@ Nodo* buscarNodo(Nodo *lista, char* identificador){
 	}
 	return aux;
 }
+
+void liberarLista(Nodo *lista) {
+	Nodo *aux, *del;
+	aux = lista;
+	while(aux->next != NULL){
+		del = aux;
+		aux = aux->next;
+		free(del);
+	}
+	free(aux);
+	free(lista);
+}

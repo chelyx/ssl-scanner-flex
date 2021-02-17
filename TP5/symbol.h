@@ -6,3 +6,4 @@ typedef struct nodo {
 Nodo *agregarNodo(Nodo *lista, char* identificador);
 Nodo *crearLista(void);
 Nodo *buscarNodo(Nodo *lista, char* identificador);
+void liberarLista(Nodo *lista);

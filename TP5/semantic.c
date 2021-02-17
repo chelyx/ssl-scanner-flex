@@ -1,7 +1,6 @@
 #include <stdio.h>
-#include <stdbool.h>
 #include "semantic.h"
-#include "symbol.c"
+#include "symbol.h"
 
 const int BYTES_RESERVA = 4;
 Nodo *lista;
@@ -12,13 +11,14 @@ void iniciar(){
 }
 
 void terminar() {
+	liberarLista(lista);
 	printf("Exit,\n");
 }
 
 int declarar(char* id) {
-	if(!contiene_nodo(id)) {
+	if(buscarNodo(lista, id) == NULL) {
          agregarNodo(lista, id);
-         printf("Reserve %s, %i", id, BYTES_RESERVA);
+         printf("Reserve %s, %d", id, BYTES_RESERVA);
         return 0;
        }
 	printf("Error Semántico: identificador %s ya declarado", id);
@@ -26,7 +26,7 @@ int declarar(char* id) {
 }
 
 void asignar(char* id){
-	printf("Store Temp#%i, %s", 0, id);
+	printf("Store Temp#%d, %s", 0, id);
 }
 
 void leer(char* id){
@@ -34,11 +34,11 @@ void leer(char* id){
 }
 
 void escribir(char* id){
-	printf("Write Temp#%i, %s", 0, id);
+	printf("Write Temp#%d, %s", 0, id);
 }
 
 int existe_identificador(char* id){
-	if(!contiene_nodo(id)){
+	if(buscarNodo(lista, id) == NULL){
 	   printf("Error Semántico: identificador %s NO declarado", id);
 	   return 1;
 	}
@@ -66,6 +66,3 @@ void generar_unario(char* id) {
 	printf("NEG %s", id);
 }
 
-bool contiene_nodo(char* id) {
-	return buscarNodo(lista, id) != NULL;
-}
