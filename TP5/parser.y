@@ -23,7 +23,7 @@ extern int errlex;
 %precedence NEG
 
 %%
-program             : PROGRAMA sentenciasfin { iniciar(); }
+program             : { iniciar(); } PROGRAMA sentenciasfin
                     ;
 sentenciasfin       : bloquesentencias fin { if (errlex+yynerrs > 0) YYABORT; else YYACCEPT;}
                     ;
@@ -35,17 +35,17 @@ bloquesentencias    : codigo
 codigo              : codigo sentencia
                     | sentencia
                     ;
-sentencia           : LEER '('identificadores')' ';' { leer($2); }
-                    | ESCRIBIR '('expresiones')' ';' { escribir($2); }
-                    | identificador "<-" expresion ';' { asignar($1); }
+sentencia           : LEER '('identificadores')' ';'
+                    | ESCRIBIR '('expresiones')' ';'
+                    | identificador "<-" expresion ';' { asignar($1, $3); }
                     | DECLARAR IDENTIFICADOR ';' { if(declarar($2)) YYERROR; }
                     | error ';'
                     ;
-identificadores     : identificador
-                    | identificadores ',' identificador
+identificadores     : identificador { leer($1); }
+                    | identificadores ',' identificador { leer($3); }
                     ;
-expresiones         : expresion
-                    | expresiones ','expresion
+expresiones         : expresion { escribir($1); }
+                    | expresiones ',' expresion { escribir($3); }
                     ;
 expresion           : expresion '+' expresion { $$ = generar_infijo('+', $1, $3); }
                     | expresion '-' expresion { $$ = generar_infijo('-', $1, $3); }
@@ -53,7 +53,7 @@ expresion           : expresion '+' expresion { $$ = generar_infijo('+', $1, $3)
                     | expresion '/' expresion { $$ = generar_infijo('/', $1, $3); }
                     | identificador
                     | CONSTANTE
-                    | '-'expresion %prec NEG { printf("inversión\n"); }
+                    | '-' expresion %prec NEG { $$ = generar_unario($2); } 
                     | '('expresion')' { $$ = $2; }
                     ;
 identificador       : IDENTIFICADOR { if(existe_identificador($1)) YYERROR;}

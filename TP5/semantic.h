@@ -3,13 +3,11 @@
 void iniciar(void);
 void terminar(void);
 int declarar(char* id);
-void asignar(char* id);
+void asignar(char* id, char* valor);
 void leer(char* id);
 void escribir(char* id);
 int existe_identificador(char* id);
 char* generar_infijo(int op, char* id1, char* id2);
-void generar_unario(char* id);
-char* chequear_identificadores(char* id);
+char* generar_unario(char* id);
 char* nuevo_temporal(void);
 #endif
-
