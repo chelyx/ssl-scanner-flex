@@ -1,47 +1,32 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "symbol.h"
 
-Nodo *crearLista() {
-	Nodo *Lista;
-	Lista = NULL;
-	return Lista;
-}
-
-Nodo *agregarNodo(Nodo *lista, char* identificador) {
-	Nodo *nuevoNodo, *current;
-	nuevoNodo = malloc(sizeof(Nodo));
-	nuevoNodo->identificador = identificador;
+void agregarNodo(struct nodo **lista, char* identificador) {
+	struct nodo *nuevoNodo = malloc(sizeof(struct nodo));
+	struct nodo *current;
+	strcpy(nuevoNodo->identificador, identificador);
 	nuevoNodo->next = NULL;
-	if(lista == NULL) {
-		lista = nuevoNodo;
-	}else {
-		current = lista;
+	if(*lista == NULL) {
+		*lista = nuevoNodo;
+	} else {
+		current = *lista;
 		while(current->next != NULL) {
 			current = current->next;
 		}
 		current->next = nuevoNodo;
 	}
-	return lista;
 }
 
-Nodo* buscarNodo(Nodo *lista, char* identificador){
-	Nodo *aux;
-	aux = lista;
-	while(aux->identificador != identificador) {
-		aux = aux->next;
-	}
-	return aux;
+int buscarIdentificador(struct nodo *lista, char *identificador) {
+    struct nodo *aux = lista;
+    while(aux != NULL && strcmp(aux->identificador, identificador)) {
+        aux = aux->next;
+    }
+    if(aux == NULL){
+        return 0; //no se encontró símbolo
+    }
+    return 1; //se encontró símbolo
 }
 
-void liberarLista(Nodo *lista) {
-	Nodo *aux, *del;
-	aux = lista;
-	while(aux->next != NULL){
-		del = aux;
-		aux = aux->next;
-		free(del);
-	}
-	free(aux);
-	free(lista);
-}

@@ -47,10 +47,10 @@ identificadores     : identificador
 expresiones         : expresion
                     | expresiones ','expresion
                     ;
-expresion           : expresion '+' expresion { printf("suma\n"); }
-                    | expresion '-' expresion { printf("resta\n"); }
-                    | expresion '*' expresion { printf("multiplicación\n"); }
-                    | expresion '/' expresion { printf("división\n"); }
+expresion           : expresion '+' expresion { $$ = generar_infijo('+', $1, $3); }
+                    | expresion '-' expresion { $$ = generar_infijo('-', $1, $3); }
+                    | expresion '*' expresion { $$ = generar_infijo('*', $1, $3); }
+                    | expresion '/' expresion { $$ = generar_infijo('/', $1, $3); }
                     | identificador
                     | CONSTANTE
                     | '-'expresion %prec NEG { printf("inversión\n"); }

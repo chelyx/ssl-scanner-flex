@@ -1,9 +1,13 @@
-typedef struct nodo {
-	char* identificador;
-	struct nodo *next;
-}Nodo;
+#ifndef SYMBOL_H_INCLUDED
+#define SYMBOL_H_INCLUDED
 
-Nodo *agregarNodo(Nodo *lista, char* identificador);
-Nodo *crearLista(void);
-Nodo *buscarNodo(Nodo *lista, char* identificador);
-void liberarLista(Nodo *lista);
+struct nodo {
+    char identificador[32];
+    struct nodo *next;
+};
+
+void agregarNodo(struct nodo **lista, char* identificador);
+int buscarIdentificador(struct nodo *lista, char *identificador);
+void imprimirLista(struct nodo *lista);
+
+#endif // SYMBOL_H_INCLUDED
